@@ -97,18 +97,16 @@ async function parseRequestBody(request: HttpRequest): Promise<any> {
 }
 
 function validateInput(input: any): CreateOrderRequest {
-  try {
-    const validFields = CreateOrderSchema.safeParse(input);
-    if (validFields.success) {
-      return validFields.data as CreateOrderRequest;
-    }
-  } catch (error: any) {
-    const validationErrors = error.errors?.map((err: any) => 
+  const validFields = CreateOrderSchema.safeParse(input);
+  
+  if (!validFields.success) {
+    const validationErrors = validFields.error.errors.map((err: any) => 
       `${err.path.join('.')}: ${err.message}`
-    ) || ['Invalid input data'];
-    
+    );
     throw new ValidationError('Validation failed', validationErrors);
   }
+  
+  return validFields.data as CreateOrderRequest;
 }
 
 function createOrder(input: CreateOrderRequest): Order {
