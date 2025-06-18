@@ -17,4 +17,4 @@ export const CreateOrderSchema = z.object({
   path: ["endDate"]
 });
 
-export type CreateOrderInput = z.infer<typeof CreateOrderSchema>;
+export type CreateOrderInputType = z.infer<typeof CreateOrderSchema>;
