@@ -172,7 +172,7 @@ describe('processOrder Function', () => {
       // Assert: Check validation error
       expect(result.status).toBe(400);
       expect(result.jsonBody.success).toBe(false);
-      expect(result.jsonBody.errors).toContain('End date must be after start date');
+      expect(result.jsonBody.errors).toContain('endDate: End date must be after start date');
     });
 
     it('should handle empty request body', async () => {

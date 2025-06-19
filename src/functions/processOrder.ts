@@ -48,11 +48,16 @@ export async function processOrder(
       );
 
       // Send message to Service Bus with retry logic
-      await withRetry(
-        () => messagingService.sendOrderMessage(order, context),
-        { maxAttempts: 3 },
-        context
-      );
+      // Send message to Service Bus with retry logic (skip if configured)
+      if (process.env.SKIP_SERVICE_BUS === 'true') {
+        context.log('Service Bus messaging skipped for testing');
+      } else {
+        await withRetry(
+          () => messagingService.sendOrderMessage(order, context),
+          { maxAttempts: 3 },
+          context
+        );
+      }
 
       // Log success metrics
       const processingTime = Date.now() - startTime;
